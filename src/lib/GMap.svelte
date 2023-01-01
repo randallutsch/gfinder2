@@ -9,24 +9,18 @@
   import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
   import Locate from "@arcgis/core/widgets/Locate";
 
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
 
   export let buffer;
   export let units;
 
-  let viewDiv;
-
   const dispatch = createEventDispatcher();
 
-  onMount(() => {
-    createMap();
-  });
-
-  const createMap = (): any => {
+  const createMap = (domNode: HTMLDivElement): any => {
     const graphicsLayer = new GraphicsLayer();
 
     const view = new MapView({
-      container: "viewDiv",
+      container: domNode,
       map: {
         basemap: "streets-vector",
         layers: [graphicsLayer],
@@ -90,7 +84,7 @@
   };
 </script>
 
-<div class="view" id="viewDiv"/>
+<div class="view" use:createMap />
 
 <style>
   .view {
