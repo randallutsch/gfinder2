@@ -15,6 +15,7 @@
     const MapView =  (await import("@arcgis/core/views/MapView")).default;
     const GraphicsLayer = (await import("@arcgis/core/layers/GraphicsLayer")).default;
     const Locate = (await import("@arcgis/core/widgets/Locate")).default;
+    const Search = (await import("@arcgis/core/widgets/Search")).default;
 
     const graphicsLayer = new GraphicsLayer();
 
@@ -28,12 +29,17 @@
       center: [-90.1928, 38.6226], // longitude, latitude
     });
 
-    let locate = new Locate({
+    const locate = new Locate({
       view: view,
       popupEnabled: false,
     });
 
+    const searchWidget = new Search({
+      view: view
+    });
+
     view.ui.add(locate, "top-left");
+    view.ui.add(searchWidget, "top-right")
 
     view.when(() => {
       locate.locate();
