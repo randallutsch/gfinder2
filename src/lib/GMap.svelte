@@ -4,16 +4,23 @@
   import * as webMercatorUtils from "@arcgis/core/geometry/support/webMercatorUtils";
   import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
 
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
 
   export let buffer;
   export let units;
 
+  let viewDiv;
+
   const dispatch = createEventDispatcher();
 
-  const createMap = async (domNode: HTMLDivElement): any => {
-    const MapView =  (await import("@arcgis/core/views/MapView")).default;
-    const GraphicsLayer = (await import("@arcgis/core/layers/GraphicsLayer")).default;
+  onMount(async () => {
+    createMap(viewDiv);
+  });
+
+  const createMap = async (domNode: HTMLDivElement): Promise<any> => {
+    const MapView = (await import("@arcgis/core/views/MapView")).default;
+    const GraphicsLayer = (await import("@arcgis/core/layers/GraphicsLayer"))
+      .default;
     const Locate = (await import("@arcgis/core/widgets/Locate")).default;
     const Search = (await import("@arcgis/core/widgets/Search")).default;
 
@@ -36,11 +43,11 @@
 
     const searchWidget = new Search({
       view: view,
-      popupEnabled: false
+      popupEnabled: false,
     });
 
     view.ui.add(locate, "top-left");
-    view.ui.add(searchWidget, "top-right")
+    view.ui.add(searchWidget, "top-right");
 
     view.when(() => {
       locate.locate();
@@ -66,8 +73,10 @@
   ) => {
     const Graphic = (await import("@arcgis/core/Graphic")).default;
     const Polygon = (await import("@arcgis/core/geometry/Polygon")).default;
-    const SimpleFillSymbol = (await import("@arcgis/core/symbols/SimpleFillSymbol")).default;
-    
+    const SimpleFillSymbol = (
+      await import("@arcgis/core/symbols/SimpleFillSymbol")
+    ).default;
+
     const simpleFillSymbol = new SimpleFillSymbol({
       color: [227, 139, 79, 0.2], // Orange, opacity 80%
       outline: {
@@ -94,7 +103,7 @@
   };
 </script>
 
-<div class="view" use:createMap />
+<div class="view" bind:this={viewDiv} />
 
 <style>
   .view {
