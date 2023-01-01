@@ -35,7 +35,8 @@
     });
 
     const searchWidget = new Search({
-      view: view
+      view: view,
+      popupEnabled: false
     });
 
     view.ui.add(locate, "top-left");
