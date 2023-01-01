@@ -21,48 +21,31 @@
   };
 </script>
 
-<div class="grid-container">
-  <div class="header-bar">
-    <BufferEntry
+<div class="header-bar">
+  <BufferEntry
       bind:bufferValue={buffer}
       bind:nameValue={name}
       bind:unitValue={unit}
     />
-  </div>
-  <div class="point-list">
-    <PointList bind:pointList={list} />
-  </div>
-  <div class="map">
-    <GMap on:mapClicked={handleClick} bind:buffer bind:units={unit} />
-  </div>
-  <div />
+</div>
+<div class="point-list">
+  <PointList bind:pointList={list} />
+</div>
+<div class="map">
+  <GMap on:mapClicked={handleClick} bind:buffer bind:units={unit} />
 </div>
 
 <style>
-  .grid-container {
-    display: grid;
-    width: 100%;
-    height: 100%;
-    grid-template-rows: 50px auto;
-    grid-template-columns: auto 1fr*;
-    grid-template-areas:
-      "header header"
-      "map list";
-  }
-
   .header-bar {
+    grid-area: header;
     padding-top: 10px;
-    grid-area: "header";
-    margin: 0 auto;
-    text-align: center;
-    vertical-align: middle;
   }
 
   .map {
-    grid-area: "map";
+    grid-area: map;
   }
 
   .point-list {
-    grid-area: "list";
+    grid-area: list;
   }
 </style>
