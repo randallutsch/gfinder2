@@ -1,13 +1,8 @@
 <script lang="ts">
-  import MapView from "@arcgis/core/views/MapView";
   import "@arcgis/core/assets/esri/themes/light/main.css";
-  import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+
   import * as webMercatorUtils from "@arcgis/core/geometry/support/webMercatorUtils";
-  import Graphic from "@arcgis/core/Graphic";
-  import Polygon from "@arcgis/core/geometry/Polygon";
-  import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
   import * as geometryEngine from "@arcgis/core/geometry/geometryEngine";
-  import Locate from "@arcgis/core/widgets/Locate";
 
   import { createEventDispatcher } from "svelte";
 
@@ -16,7 +11,11 @@
 
   const dispatch = createEventDispatcher();
 
-  const createMap = (domNode: HTMLDivElement): any => {
+  const createMap = async (domNode: HTMLDivElement): any => {
+    const MapView =  (await import("@arcgis/core/views/MapView")).default;
+    const GraphicsLayer = (await import("@arcgis/core/layers/GraphicsLayer")).default;
+    const Locate = (await import("@arcgis/core/widgets/Locate")).default;
+
     const graphicsLayer = new GraphicsLayer();
 
     const view = new MapView({
@@ -53,11 +52,15 @@
     });
   };
 
-  const addBufferToMap = (
+  const addBufferToMap = async (
     e: __esri.ViewClickEvent,
     graphicsLayer: GraphicsLayer,
     view: __esri.MapView
   ) => {
+    const Graphic = (await import("@arcgis/core/Graphic")).default;
+    const Polygon = (await import("@arcgis/core/geometry/Polygon")).default;
+    const SimpleFillSymbol = (await import("@arcgis/core/symbols/SimpleFillSymbol")).default;
+    
     const simpleFillSymbol = new SimpleFillSymbol({
       color: [227, 139, 79, 0.2], // Orange, opacity 80%
       outline: {
